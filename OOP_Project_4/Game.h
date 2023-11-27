@@ -6,6 +6,8 @@
 #include"Turn.h"
 using namespace std;
 
+#define MAXTURN 3	// 한 턴 당 주사위는 3번 굴릴 수 있음
+
 class Game {
 private:
 	int turn_left;
@@ -25,8 +27,18 @@ public:
 
 	void turnStart() {
 		displayBoard();	// turn이 시작할 때 점수판을 보여줌
-		turn.diceRoll();	// 주사위 굴림
+
+		int curTurn = 0;	// 총 3번의 기회 중 현재 몇 번 째인가?
+
+		while (curTurn < MAXTURN) {	// 총 3번 굴리는 중
+			turn.diceRoll();	// 주사위 굴림
+			turn.displayDice();	// 굴린 주사위의 결과 출력
+			// 주사위를 저장함
+			// 점수를 선택했다면 break
+		}
 		
+		
+		turnEnd();
 	}
 
 	void turnEnd() {
