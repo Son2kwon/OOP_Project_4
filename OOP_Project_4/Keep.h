@@ -3,14 +3,14 @@
 
 class Keep {
 private:
-	vector<int> stored_Die;
+	vector<Dice> stored_Die; // Dice °´Ã¼ vector
 
 public:
 	Keep() {	// constructor
 
 	}
 
-	void storeNumber() {
+	void storeNumber(int number) {
 
 	}
 
@@ -24,5 +24,9 @@ public:
 
 	void initialize() {
 		stored_Die.clear();
+	}
+
+	Dice getDice(int index) {
+		return stored_Die[index];
 	}
 };

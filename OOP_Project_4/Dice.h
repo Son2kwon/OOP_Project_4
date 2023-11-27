@@ -5,6 +5,7 @@
 class Dice {
 private:
 	int number;	// 주사위의 눈
+	bool keeped = false; // 주사위가 keep 되었는지 아닌지
 
 public:
 	Dice() {	// constructor
@@ -23,5 +24,17 @@ public:
 
 	int getNumber() {
 		return number;
+	}
+
+	void setKeeped() {
+		this->keeped = true;
+	}
+
+	void setOut() {
+		this->keeped = false;
+	}
+
+	bool getKeeped() {
+		return this->keeped;
 	}
 };
