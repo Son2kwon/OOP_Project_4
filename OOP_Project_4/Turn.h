@@ -30,4 +30,16 @@ public:
 
 		cout << endl;
 	}
+
+	void calScore() {
+		keep.calScore();
+	}
+
+	void storeDice() {
+		keep.storeNumber(dice);
+	}
+
+	void deleteNumber(int* index) {
+		keep.deleteNumber(index);
+	}
 };
