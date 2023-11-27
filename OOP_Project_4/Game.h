@@ -33,8 +33,21 @@ public:
 		while (curTurn < MAXTURN) {	// 총 3번 굴리는 중
 			turn.diceRoll();	// 주사위 굴림
 			turn.displayDice();	// 굴린 주사위의 결과 출력
-			// 주사위를 저장함
-			// 점수를 선택했다면 break
+			
+			/*
+			1. 나온 주사위의 결과를 모두 keep에 저장
+			2. 점수 계산 및 출력
+			3. 저장할 주사위의 index를 입력 (1 ~ 5)
+			4. 저장할 주사위 빼고 나머지는 vector에서 삭제
+			*/
+			turn.storeDice();	// 나온 주사위의 결과를 모두 keep에 저장
+			turn.calScore();	// 점수 계산 및 출력
+
+			cout << "저장할 주사위를 선택해주세요: ";
+			int index[5] = { 0, }; int i = 0;
+			while (cin >> index[i]) i++;
+
+			turn.deleteNumber(index);
 		}
 		
 		
