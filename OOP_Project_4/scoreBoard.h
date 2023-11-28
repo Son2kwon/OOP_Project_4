@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include<string>
+
 using namespace std;
 
 typedef struct Score {
@@ -12,30 +13,38 @@ typedef struct Score {
 class ScoreBoard {	// 한 사람당 점수판
 private:
 	string playerName;
-	vector<score> scores;
+	Score scores[12];		//벡터에서 배열로 바꿨음!
 	int totalScore;		
 
 public:
-	void initializeScoreBoard()		//어차피 모든 점수가 채워져야 되므로.. 점수 벡터 만들고 시작.
+	ScoreBoard()		//어차피 모든 점수가 채워져야 되므로.. 점수 벡터 만들고 시작.
 	{
 		totalScore = 0;
 
-		scores.push_back({ "Ones",0,false });
-		scores.push_back({ "Twos", 0, false });
-		scores.push_back({ "Threes", 0,false });
-		scores.push_back({ "Fours", 0 ,false });
-		scores.push_back({ "Fives", 0 ,false });
-		scores.push_back({ "Sixes", 0 ,false });
+	
+		scores[0]={ "Ones",0,false };
+		scores[1] = { "Twos",0,false };
+		scores[2] = { "Threes",0,false };
+		scores[3] = { "Fours",0,false };
+		scores[4] = { "Fives",0,false };
+		scores[5] = { "Sixes",0,false };
 
-		scores.push_back({ "Four of a kind", 0,false });
-		scores.push_back({ "Full House", 0 ,false });
-		scores.push_back({ "Little Straight", 0,false });
-		scores.push_back({ "Big Straight", 0,false });
-		scores.push_back({ "Yacht", 0 ,false });
-		scores.push_back({ "Choice", 0 ,false });
+		scores[6] = { "Four of a kind",0,false };
+		scores[7] = { "Full House",0,false };
+		scores[8] = { "Little Straight",0,false };
+		scores[9] = { "Big Straight",0,false };
+		scores[10] = { "Yacht",0,false };
+		scores[11] = { "Choice",0,false };
+
 
 	}
+
+	score getScore(int n) {
+		return scores[n];
+	}
+
 	void updateScore() {
+
 
 	}
 
@@ -50,15 +59,15 @@ public:
 	}
 
 	int calTotalResult() {
-		for (int i = 0; i < scores.size(); i++) {
+		for (int i = 0; i < 12; i++) {
 			if(scores[i].filled)
 				totalScore += scores[i].score;
 		}
 		return totalScore;
 	}
 
-	bool isFilledAll() {							//점수판의 모든 점수가 채워졌는지를 체크하여 반환, 전부다 채워졌으면 게임 종료
-		for (int i = 0; i < scores.size(); i++) {
+	bool isFilledAll() {							//점수판의 모든 점수가 채워졌는지를 체크하여 반환, 전부다 채워졌으면 게임 종료시켜야함
+		for (int i = 0; i < 12; i++) {
 			if (scores[i].filled == false)
 				return false;
 			return true;
