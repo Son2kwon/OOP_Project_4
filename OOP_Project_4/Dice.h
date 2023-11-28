@@ -23,7 +23,7 @@ public:
 		number = 0;
 	}
 
-	int getNumber() {
+	int getNumber() const {
 		return number;
 	}
 
