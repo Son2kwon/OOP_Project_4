@@ -4,6 +4,16 @@
 class Keep {
 private:
 	vector<Dice> stored_Die; // Dice °´Ã¼ vector
+	int scores[13]; /*
+	[0-5]		Ones, Twos, Threes, Fours, Fives, Sixes
+	[6]			Choice
+	[7]			Four of a Kind
+	[8]			Full House
+	[9]			Little Striaght
+	[10]		Big Straight
+	[11]		Yacht
+	[12]		Bouns
+	*/
 
 public:
 	Keep() : stored_Die(5, Dice()) {	// constructor
@@ -153,6 +163,24 @@ public:
 		cout << "Big Straight : " << bs << endl;
 		cout << "Yacht : " << yacht << endl;
 		
+		this->scores[0] = ones;
+		this->scores[1] = twos;
+		this->scores[2] = threes;
+		this->scores[3] = fours;
+		this->scores[4] = fives;
+		this->scores[5] = sixes;
+		this->scores[6] = choice;
+		this->scores[7] = foak;
+		this->scores[8] = fh;
+		this->scores[9] = ls;
+		this->scores[10] = bs;
+		this->scores[11] = yacht;
+		this->scores[12] = bonus;
+	
+	}
+
+	const int* getScores() const {
+		return scores;
 	}
 
 	void initialize() {
