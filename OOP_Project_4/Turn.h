@@ -56,7 +56,7 @@ public:
 	}
 
 	void calScore() {
-		// keep에 있는 calScore 그대로 복사 붙여넣기 하기. 
+		//keep.calScore();
 	}
 
 	void storeDice(int* index) {
