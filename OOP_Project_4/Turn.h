@@ -42,6 +42,19 @@ public:
 		cout << endl;
 	}
 
+	void displayKeepedDice() {
+		for (int i = 0; i < 5; i++) {
+			if (keep.getDice(i).getKeeped()) {
+				cout << keep.getDice(i).getNumber() << " ";
+			}
+			else {
+				cout << "_ ";
+			}
+		}
+		
+		cout << endl;
+	}
+
 	void calScore() {
 		// keep에 있는 calScore 그대로 복사 붙여넣기 하기. 
 	}
@@ -49,12 +62,12 @@ public:
 	void storeDice(int* index) {
 		int i = 0;
 		while (*(index + i) != 0) {
-			keep.storeNumber(dice[i]);
+			keep.storeNumber(keep.getDice(i-1));
 			i++;
 		}
 	}
 
-	void deleteNumber(int* index) {
+	void deleteDice(int* index) {
 		
 	}
 };

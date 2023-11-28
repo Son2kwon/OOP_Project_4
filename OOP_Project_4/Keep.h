@@ -6,12 +6,12 @@ private:
 	vector<Dice> stored_Die; // Dice °´Ã¼ vector
 
 public:
-	Keep() {	// constructor
+	Keep() : stored_Die(5, Dice()) {	// constructor
 
 	}
 
 	void storeNumber(Dice dice) {
-		stored_Die.push_back(dice);
+		dice.setKeeped(true);
 	}
 
 	void deleteNumber(int* index) {
