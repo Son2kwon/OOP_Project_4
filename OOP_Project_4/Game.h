@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include<string>
+#include<Windows.h>
 #include"Dice.h"
 #include"scoreBoard.h"
 #include"Turn.h"
@@ -23,6 +24,18 @@ public:
 
 	void gameStart() {
 		// board 초기화
+		cout << "몇명이 플레이 하시겠습니까?: ";
+		cin >> numberOfPlayer;
+
+		//인원수에 따라 board 벡터 초기화
+		for (int i = 0; i < numberOfPlayer; i++) {		
+			board.push_back(ScoreBoard());
+		}	
+		//모든 점수가 채워질때까지 turnStart 호출
+		while (!isGameOver()) {
+			turnStart();
+		}
+		winner();
 	}
 
 	void turnStart() {
@@ -34,11 +47,11 @@ public:
 			turn.diceRoll();	// 주사위 굴림
 			turn.displayDice();	// 굴린 주사위의 결과 출력
 			
-			/*
-			1. 나온 주사위를 turn에서 점수 계산 및 출력
-			2. 저장할 주사위의 index를 입력 (1 ~ 5)
-			3. 저장할 주사위를 keep에 저장
-			*/
+			
+//			1. 나온 주사위를 turn에서 점수 계산 및 출력
+//			2. 저장할 주사위의 index를 입력 (1 ~ 5)
+//			3. 저장할 주사위를 keep에 저장
+//			
 
 			turn.calScore();	// 점수 계산 및 출력
 
@@ -48,10 +61,10 @@ public:
 
 			turn.storeDice(index);	// index를 넘겨 turn에 있는 dice를 저장
 
-			/*
-			4. out
-			keep된 Dice들을 다 출력(displayKeepedDice) -> 뺄 Dice의 index를 넘겨서 turn.deleteDice(index)로 넘겨줘!
-			*/
+			
+//			4. out
+//			keep된 Dice들을 다 출력(displayKeepedDice) -> 뺄 Dice의 index를 넘겨서 turn.deleteDice(index)로 넘겨줘!
+			
 
 			curTurn++;
 		}
@@ -80,6 +93,34 @@ public:
 	}
 
 	void displayBoard() {
+		system("cls"); //화면 비움..
+		int i,j;
 
+		cout << "              ";
+		for (i = 0; i < numberOfPlayer; i++) {
+			cout  << " Player" << i;
+		}
+		cout << endl;
+
+		for (i = 0; i < 12 ; i++) {
+			cout.width(15);
+			cout << left<<board[0].getScore(i).name;
+			for (j = 0; j < numberOfPlayer; j++) {
+				score boardScore = board[j].getScore(i);
+				cout.width(8);
+				if (boardScore.filled)				//점수가 채워진 상태면 점수 출력
+					cout << board[j].getScore(i).score;
+				else								//점수가 안채워졌으면 "-" 출력
+					cout << "-";
+			}
+			cout << endl;
+		}
+
+	}
+	bool isGameOver() {				//모든 플레이어의 board가 모두 채워지면 true를 반환->게임 종료
+		for (int i = 0; i < numberOfPlayer;i++) {
+			if (board[i].isFilledAll() == false)
+				return false;
+		}
 	}
 };
