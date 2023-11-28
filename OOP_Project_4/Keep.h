@@ -3,17 +3,15 @@
 
 class Keep {
 private:
-	vector<int> stored_Die;
+	vector<Dice> stored_Die;
 
 public:
 	Keep() {	// constructor
 
 	}
 
-	void storeNumber(Dice* dice) {	// 일단 저장은 전부 다
-		for (int i = 0; i < 5; i++) {
-			stored_Die.push_back(dice[i].getNumber());
-		}
+	void storeNumber(Dice dice) {
+		stored_Die.push_back(dice);
 	}
 
 	void deleteNumber(int* index) {

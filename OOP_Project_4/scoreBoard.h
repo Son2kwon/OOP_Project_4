@@ -20,7 +20,7 @@ public:
 	{
 		totalScore = 0;
 
-		scores.push_back({"Ones",0,false});
+		scores.push_back({ "Ones",0,false });
 		scores.push_back({ "Twos", 0, false });
 		scores.push_back({ "Threes", 0,false });
 		scores.push_back({ "Fours", 0 ,false });
@@ -57,7 +57,7 @@ public:
 		return totalScore;
 	}
 
-	bool isFilledAll() {							//점수판의 모든 점수가 채워졌는지를 체크하여 반환.
+	bool isFilledAll() {							//점수판의 모든 점수가 채워졌는지를 체크하여 반환, 전부다 채워졌으면 게임 종료
 		for (int i = 0; i < scores.size(); i++) {
 			if (scores[i].filled == false)
 				return false;
