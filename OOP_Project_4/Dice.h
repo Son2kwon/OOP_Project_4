@@ -12,6 +12,7 @@ public:
 		number = 0;
 	}
 
+
 	void roll() {	// 주사위를 굴림
 		srand(time(NULL));	// 난수를 위한 seed 설정
 
@@ -22,12 +23,12 @@ public:
 		number = 0;
 	}
 
-	int getNumber() {
+	int getNumber() const {
 		return number;
 	}
 
-	void setKeeped() {
-		this->keeped = true;
+	void setKeeped(bool keeped) {
+		this->keeped = keeped;
 	}
 
 	void setOut() {

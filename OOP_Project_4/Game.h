@@ -48,6 +48,11 @@ public:
 
 			turn.storeDice(index);	// index를 넘겨 turn에 있는 dice를 저장
 
+			/*
+			4. out
+			keep된 Dice들을 다 출력(displayKeepedDice) -> 뺄 Dice의 index를 넘겨서 turn.deleteDice(index)로 넘겨줘!
+			*/
+
 			curTurn++;
 		}
 		
