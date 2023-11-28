@@ -61,7 +61,16 @@ public:
 	}
 
 	void winner() {
-
+		int winner_index = 0;
+		int winner_score = board[0].calTotalResult();
+		for (int i = 0; i < board.size(); i++) {
+			int score = board[i].calTotalResult();
+			if (score> winner_score) {
+				winner_index = i;
+				winner_score = score;
+			}
+		}
+		cout << "Winner is player " << winner_index << ", (Score: " << winner_score << ")" << endl;
 	}
 
 	void displayBoard() {
