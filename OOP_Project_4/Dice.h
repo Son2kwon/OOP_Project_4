@@ -27,8 +27,8 @@ public:
 		return number;
 	}
 
-	void setKeeped(bool keeped) {
-		this->keeped = keeped;
+	void setKeeped() {	// 굳이 매개변수 없이 그냥 true로 설정하면 될 것 같아
+		this->keeped = true;
 	}
 
 	void setOut() {

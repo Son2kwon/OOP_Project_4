@@ -21,16 +21,11 @@ public:
 	}
 
 	void storeNumber(Dice dice) {
-		dice.setKeeped(true);
+		dice.setKeeped();
 	}
 
-	void deleteNumber(int* index) {
-		int i = 0;
-		int index[5] = { 1,2,3,4,5 };
-		while (index[i] != 0) {
-			// index에 없는 값을 뺄 것
-			
-		}
+	void deleteNumber(Dice dice) {
+		dice.setOut();	// keep을 false로 넘김
 	}
 
 	void calScore() {

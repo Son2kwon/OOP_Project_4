@@ -47,28 +47,43 @@ public:
 			turn.diceRoll();	// 주사위 굴림
 			turn.displayDice();	// 굴린 주사위의 결과 출력
 			
-			
 //			1. 나온 주사위를 turn에서 점수 계산 및 출력
 //			2. 저장할 주사위의 index를 입력 (1 ~ 5)
 //			3. 저장할 주사위를 keep에 저장
-//			
 
 			turn.calScore();	// 점수 계산 및 출력
 
+			if (curTurn == MAXTURN - 1) break;	// 사실 마지막 기회라면 던지고 끝
+
+			cout << "한 번 더 던지시겠습니까? "; char choice;	// 점수를 출력하고 주사위를 더 굴릴 것인지 결정
+			cin >> choice;
+
+			if (choice == 'n') break;	// 더 안 굴리면 while문을 빠져나와 모든 주사위를 저장함
+
+
 			cout << "저장할 주사위를 선택해주세요: ";
-			int index[5] = { 0, }; int i = 0;	// 0으로 초기화 해두고, 0이 아닌 애들 index만 저장하기
-			while (cin >> index[i]) i++;
+			int index_store[5] = { 0, }; int i = 0;	// 0으로 초기화 해두고, 0이 아닌 애들 index만 저장하기
+			while (cin >> index_store[i]) i++;
 
-			turn.storeDice(index);	// index를 넘겨 turn에 있는 dice를 저장
+			turn.storeDice(index_store);	// index를 넘겨 turn에 있는 dice를 저장
 
+			cout << "저장된 주사위에서 뺄 주사위를 선택해주세요: ";	
+			int index_delete[5] = { 0, }; int i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
+			while (cin >> index_delete[i]) i++;
+			turn.deleteDice(index_delete);	// 삭제할 index를 넘겨줌
 			
 //			4. out
 //			keep된 Dice들을 다 출력(displayKeepedDice) -> 뺄 Dice의 index를 넘겨서 turn.deleteDice(index)로 넘겨줘!
 			
+			
 
 			curTurn++;
 		}
-		
+		turn.storeAllDice();	// 모든 주사위 저장
+
+		// 점수 어디다 저장할지 정하는 부분
+
+
 		
 		turnEnd();
 	}
