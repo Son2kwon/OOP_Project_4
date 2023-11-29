@@ -25,11 +25,13 @@ public:
 	}
 
 	void diceRoll() { // 주사위가 keep 되지 않았으면 굴리기
-		for (int i = 0; i < 5; i++) {
+		/*for (int i = 0; i < NUMOFDICE; i++) {
 			if (!keep.getDice(i).getKeeped()) {
 				keep.getDice(i).roll();
 			}
-		}
+		}*/
+
+		keep.roll();
 	}
 	
 
