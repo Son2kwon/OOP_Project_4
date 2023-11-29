@@ -8,6 +8,7 @@
 using namespace std;
 
 #define MAXTURN 3	// 한 턴 당 주사위는 3번 굴릴 수 있음
+#define NUMOFDICE 5
 
 class Game {
 private:
@@ -45,33 +46,57 @@ public:
 
 		while (curTurn < MAXTURN) {	// 총 3번 굴리는 중
 			turn.diceRoll();	// 주사위 굴림
+			cout << endl << "주사위를 굴린 결과: ";
 			turn.displayDice();	// 굴린 주사위의 결과 출력
+			cout << endl;
 			
 //			1. 나온 주사위를 turn에서 점수 계산 및 출력
 //			2. 저장할 주사위의 index를 입력 (1 ~ 5)
 //			3. 저장할 주사위를 keep에 저장
 
 			turn.calScore();	// 점수 계산 및 출력
+			cout << endl;
 
 			if (curTurn == MAXTURN - 1) break;	// 사실 마지막 기회라면 던지고 끝
 
-			cout << "한 번 더 던지시겠습니까? "; char choice;	// 점수를 출력하고 주사위를 더 굴릴 것인지 결정
+			cin.ignore();
+			cout << "주사위를 저장하시겠습니까? (y/n): "; char choice; cin >> choice;
+
+			if (choice == 'y') {
+				cout << "저장할 주사위를 선택해주세요: ";
+				int index_store[5] = { 0, }; int i = 0;	// 0으로 초기화 해두고, 0이 아닌 애들 index만 저장하기
+				cin.ignore();
+				while (cin >> index_store[i]) {
+					i++;
+					if (cin.peek() == '\n') {  // Check for Enter key
+						break;
+					}
+				}
+
+				turn.storeDice(index_store);	// index를 넘겨 turn에 있는 dice를 저장
+			}
+			
+
+			if (!turn.isEmpty()) {	// 비어있으면 뺄 주사위도 없음.
+				cin.ignore();
+				cout << "저장된 주사위: "; turn.printAllKeepedDice(); cout << endl;
+				cout << "저장된 주사위에서 빼겠습니까? (y/n): "; cin >> choice;
+				if (choice == 'y') {
+					cin.ignore();
+					cout << "저장된 주사위에서 뺄 주사위를 선택해주세요: ";
+					cin.ignore();
+					int index_delete[5] = { 0, }; int i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
+					while (cin >> index_delete[i]) i++;
+					turn.deleteDice(index_delete);	// 삭제할 index를 넘겨줌
+				}
+			}
+			
+
+			cout << "한 번 더 던지시겠습니까? "; // 저장하고 주사위를 더 굴릴 것인지 결정
+			cin.ignore();
 			cin >> choice;
 
 			if (choice == 'n') break;	// 더 안 굴리면 while문을 빠져나와 모든 주사위를 저장함
-
-
-			cout << "저장할 주사위를 선택해주세요: ";
-			int index_store[5] = { 0, }; int i = 0;	// 0으로 초기화 해두고, 0이 아닌 애들 index만 저장하기
-			while (cin >> index_store[i]) i++;
-
-			turn.storeDice(index_store);	// index를 넘겨 turn에 있는 dice를 저장
-
-			cout << "저장된 주사위에서 뺄 주사위를 선택해주세요: ";	
-			int index_delete[5] = { 0, }; i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
-			while (cin >> index_delete[i]) i++;
-			turn.deleteDice(index_delete);	// 삭제할 index를 넘겨줌
-			
 //			4. out
 //			keep된 Dice들을 다 출력(displayKeepedDice) -> 뺄 Dice의 index를 넘겨서 turn.deleteDice(index)로 넘겨줘!
 			
@@ -82,8 +107,6 @@ public:
 		turn.storeAllDice();	// 모든 주사위 저장
 
 		// 점수 어디다 저장할지 정하는 부분
-
-
 		
 		turnEnd();
 	}
@@ -132,6 +155,7 @@ public:
 		}
 
 	}
+
 	bool isGameOver() {				//모든 플레이어의 board가 모두 채워지면 true를 반환->게임 종료
 		for (int i = 0; i < numberOfPlayer;i++) {
 			if (board[i].isFilledAll() == false)
