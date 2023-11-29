@@ -84,4 +84,7 @@ public:
 			keep.storeNumber(keep.getDice(i));
 		}
 	}
+	Keep getKeep() {
+		return keep;
+	}
 };
