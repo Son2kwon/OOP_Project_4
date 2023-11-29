@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include"Dice.h"
 
 #define NUMOFDICE 5
 
@@ -18,16 +19,16 @@ private:
 	*/
 
 public:
-	Keep() : stored_Die(5, Dice()) {	// constructor
+	Keep() : stored_Die(NUMOFDICE, Dice()) {	// constructor
 
 	}
 
-	void storeNumber(Dice dice) {
-		dice.setKeeped();
+	void storeNumber(Dice* dice) {
+		dice->setKeeped();
 	}
 
-	void deleteNumber(Dice dice) {
-		dice.setOut();	// keep¿ª false∑Œ ≥—±Ë
+	void deleteNumber(Dice* dice) {
+		dice->setOut();	// keep¿ª false∑Œ ≥—±Ë
 	}
 
 	void calScore() {
@@ -181,16 +182,26 @@ public:
 	}
 
 	void initialize() {
-		stored_Die.clear();
+		for (int i = 0; i < NUMOFDICE; i++) {
+			stored_Die[i].setOut();
+		}
 	}
 
-	Dice getDice(int index) {
-		return stored_Die[index];
+	Dice* getDice(int index) {
+		return &stored_Die[index];
 	}
 
 	void roll() {
 		for (int i = 0; i < NUMOFDICE; i++) {
-			stored_Die[i].roll();
+			if(!stored_Die[i].getKeeped())	stored_Die[i].roll();
 		}
+	}
+
+	bool isEmpty() {
+		for (int i = 0; i < NUMOFDICE; i++) {
+			if (stored_Die[i].getKeeped()) return false;
+		}
+
+		return true;
 	}
 };

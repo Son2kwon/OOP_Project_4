@@ -33,23 +33,25 @@ public:
 
 		keep.roll();
 	}
-	
 
 	void initialize() {
 		keep.initialize();
 	}
 
 	void displayDice() {	// 주사위의 눈을 화면에 표시하는 함수
-		for (int i = 0; i < 5; i++)
-			cout << keep.getDice(i).getNumber() << " ";
+		for (int i = 0; i < 5; i++) {
+			Dice* dice = keep.getDice(i);
+			cout << dice->getNumber() << " ";
+		}
 
 		cout << endl;
 	}
 
 	void displayKeepedDice() {
 		for (int i = 0; i < 5; i++) {
-			if (keep.getDice(i).getKeeped()) {
-				cout << keep.getDice(i).getNumber() << " ";
+			Dice* dice = keep.getDice(i);
+			if (dice->getKeeped()) {
+				cout << dice->getNumber() << " ";
 			}
 			else {
 				cout << "_ ";
@@ -63,25 +65,39 @@ public:
 		keep.calScore();
 	}
 
-	void storeDice(int* index) {
+	void storeDice(const int* index) {
 		int i = 0;
-		while (*(index + i) != 0) {
-			keep.storeNumber(keep.getDice(i));	// i는 그냥 인덱스라 i-1에서 i로 바꿈
+		while (*(index + i) != 0 && i < NUMOFDICE) {
+			Dice* dice = keep.getDice(*(index + i) - 1);
+			keep.storeNumber(dice);
 			i++;
 		}
 	}
 
-	void deleteDice(int* index) {
+	void deleteDice(const int* index) {
 		int i = 0;
 		while (*(index + i) != 0) {
-			keep.deleteNumber(keep.getDice(i));	// 입력받은 index에 따라 삭제
+			Dice* dice = keep.getDice(i);
+			keep.deleteNumber(dice);	// 입력받은 index에 따라 삭제
 			i++;
 		}
 	}
 
 	void storeAllDice() {
 		for (int i = 0; i < NUMOFDICE; i++) {
-			keep.storeNumber(keep.getDice(i));
+			Dice* dice = keep.getDice(i);
+			keep.storeNumber(dice);
 		}
+	}
+
+	void printAllKeepedDice() {	// 저장된 모든 주사위의 눈을 출력하는 함수
+		for (int i = 0; i < NUMOFDICE; i++) {
+			Dice* dice = keep.getDice(i);
+			if (dice->getKeeped()) cout << dice->getNumber() << " ";
+		}
+	}
+
+	bool isEmpty() {
+		return keep.isEmpty();
 	}
 };
