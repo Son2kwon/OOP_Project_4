@@ -12,19 +12,19 @@ private:
 
 public:
 	/*
-	diceRoll -> keep/out °áÁ¤ -> saveKeepedDice
+	diceRoll -> keep/out ê²°ì • -> saveKeepedDice
 
-	diceRoll -> ÁÖ»çÀ§°¡ keeped »óÅÂ°¡ ¾Æ´Ï¶ó¸é ±¼¸®±â
+	diceRoll -> ì£¼ì‚¬ìœ„ê°€ keeped ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´ êµ´ë¦¬ê¸°
 
-	keep °áÁ¤ -> keep °´Ã¼ÀÇ Dice °´Ã¼ º¤ÅÍÀÇ keeped °ªÀ» true·Î º¯°æ
-	out °áÁ¤ -> keep °´Ã¼ÀÇ Dice °´Ã¼ º¤ÅÍÀÇ keeped °ªÀ» false·Î º¯°æ
+	keep ê²°ì • -> keep ê°ì²´ì˜ Dice ê°ì²´ ë²¡í„°ì˜ keeped ê°’ì„ trueë¡œ ë³€ê²½
+	out ê²°ì • -> keep ê°ì²´ì˜ Dice ê°ì²´ ë²¡í„°ì˜ keeped ê°’ì„ falseë¡œ ë³€ê²½
 
 	*/
 	Turn() {	// constructor
 
 	}
 
-	void diceRoll() { // ÁÖ»çÀ§°¡ keep µÇÁö ¾Ê¾ÒÀ¸¸é ±¼¸®±â
+	void diceRoll() { // ì£¼ì‚¬ìœ„ê°€ keep ë˜ì§€ ì•Šì•˜ìœ¼ë©´ êµ´ë¦¬ê¸°
 		/*for (int i = 0; i < NUMOFDICE; i++) {
 			if (!keep.getDice(i).getKeeped()) {
 				keep.getDice(i).roll();
@@ -33,23 +33,25 @@ public:
 
 		keep.roll();
 	}
-	
 
 	void initialize() {
 		keep.initialize();
 	}
 
-	void displayDice() {	// ÁÖ»çÀ§ÀÇ ´«À» È­¸é¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼ö
-		for (int i = 0; i < 5; i++)
-			cout << keep.getDice(i).getNumber() << " ";
+	void displayDice() {	// ì£¼ì‚¬ìœ„ì˜ ëˆˆì„ í™”ë©´ì— í‘œì‹œí•˜ëŠ” í•¨ìˆ˜
+		for (int i = 0; i < 5; i++) {
+			Dice* dice = keep.getDice(i);
+			cout << dice->getNumber() << " ";
+		}
 
 		cout << endl;
 	}
 
 	void displayKeepedDice() {
 		for (int i = 0; i < 5; i++) {
-			if (keep.getDice(i).getKeeped()) {
-				cout << keep.getDice(i).getNumber() << " ";
+			Dice* dice = keep.getDice(i);
+			if (dice->getKeeped()) {
+				cout << dice->getNumber() << " ";
 			}
 			else {
 				cout << "_ ";
@@ -63,28 +65,44 @@ public:
 		keep.calScore();
 	}
 
-	void storeDice(int* index) {
+	void storeDice(const int* index) {
 		int i = 0;
-		while (*(index + i) != 0) {
-			keep.storeNumber(keep.getDice(i));	// i´Â ±×³É ÀÎµ¦½º¶ó i-1¿¡¼­ i·Î ¹Ù²Ş
+		while (*(index + i) != 0 && i < NUMOFDICE) {
+			Dice* dice = keep.getDice(*(index + i) - 1);
+			keep.storeNumber(dice);
 			i++;
 		}
 	}
 
-	void deleteDice(int* index) {
+	void deleteDice(const int* index) {
 		int i = 0;
 		while (*(index + i) != 0) {
-			keep.deleteNumber(keep.getDice(i));	// ÀÔ·Â¹ŞÀº index¿¡ µû¶ó »èÁ¦
+			Dice* dice = keep.getDice(i);
+			keep.deleteNumber(dice);	// ì…ë ¥ë°›ì€ indexì— ë”°ë¼ ì‚­ì œ
 			i++;
 		}
 	}
 
 	void storeAllDice() {
 		for (int i = 0; i < NUMOFDICE; i++) {
-			keep.storeNumber(keep.getDice(i));
+			Dice* dice = keep.getDice(i);
+			keep.storeNumber(dice);
 		}
 	}
+
 	Keep getKeep() {
 		return keep;
+
+
+	void printAllKeepedDice() {	// ì €ì¥ëœ ëª¨ë“  ì£¼ì‚¬ìœ„ì˜ ëˆˆì„ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
+		for (int i = 0; i < NUMOFDICE; i++) {
+			Dice* dice = keep.getDice(i);
+			if (dice->getKeeped()) cout << dice->getNumber() << " ";
+		}
+	}
+
+	bool isEmpty() {
+		return keep.isEmpty();
+
 	}
 };
