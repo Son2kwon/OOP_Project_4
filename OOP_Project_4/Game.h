@@ -68,7 +68,7 @@ public:
 			turn.storeDice(index_store);	// index를 넘겨 turn에 있는 dice를 저장
 
 			cout << "저장된 주사위에서 뺄 주사위를 선택해주세요: ";	
-			int index_delete[5] = { 0, }; int i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
+			int index_delete[5] = { 0, }; i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
 			while (cin >> index_delete[i]) i++;
 			turn.deleteDice(index_delete);	// 삭제할 index를 넘겨줌
 			

@@ -1,6 +1,8 @@
 #pragma once
 #include<iostream>
 
+#define NUMOFDICE 5
+
 class Keep {
 private:
 	vector<Dice> stored_Die; // Dice °´Ã¼ vector
@@ -184,5 +186,11 @@ public:
 
 	Dice getDice(int index) {
 		return stored_Die[index];
+	}
+
+	void roll() {
+		for (int i = 0; i < NUMOFDICE; i++) {
+			stored_Die[i].roll();
+		}
 	}
 };

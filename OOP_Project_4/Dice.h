@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<chrono>
 #include<random>
 
 class Dice {
@@ -14,9 +15,23 @@ public:
 
 
 	void roll() {	// 주사위를 굴림
-		srand(time(NULL));	// 난수를 위한 seed 설정
+		//srand(time(NULL));	// 난수를 위한 seed 설정
 
-		number = (rand() % 6) + 1;	// number에 1 ~ 6 중 하나를 random하게 저장
+		//this->number = (rand() % 6) + 1;	// number에 1 ~ 6 중 하나를 random하게 저장
+
+		// Use the current time as a seed
+		unsigned seed = static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count());
+
+		// Initialize a random number generator with the seed
+		std::default_random_engine generator(seed);
+
+		// Create a distribution for the range of numbers you want
+		std::uniform_int_distribution<int> distribution(1, 6);
+
+		// Generate a random number
+		int randomNumber = distribution(generator);
+
+		this->number = randomNumber;
 	}
 
 	void initialize() {
