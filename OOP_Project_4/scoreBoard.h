@@ -45,7 +45,6 @@ public:
 
 	void updateScore() {
 
-
 	}
 
 	void bonusScore() {

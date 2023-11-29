@@ -4,6 +4,8 @@
 #include"Keep.h"
 using namespace std;
 
+#define NUMOFDICE	5
+
 class Turn {
 private:
 	Keep keep;
@@ -56,18 +58,28 @@ public:
 	}
 
 	void calScore() {
-		//keep.calScore();
+		keep.calScore();
 	}
 
 	void storeDice(int* index) {
 		int i = 0;
 		while (*(index + i) != 0) {
-			keep.storeNumber(keep.getDice(i-1));
+			keep.storeNumber(keep.getDice(i));	// i는 그냥 인덱스라 i-1에서 i로 바꿈
 			i++;
 		}
 	}
 
 	void deleteDice(int* index) {
-		
+		int i = 0;
+		while (*(index + i) != 0) {
+			keep.deleteNumber(keep.getDice(i));	// 입력받은 index에 따라 삭제
+			i++;
+		}
+	}
+
+	void storeAllDice() {
+		for (int i = 0; i < NUMOFDICE; i++) {
+			keep.storeNumber(keep.getDice(i));
+		}
 	}
 };
