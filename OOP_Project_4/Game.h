@@ -7,16 +7,16 @@
 #include"Turn.h"
 using namespace std;
 
-#define MAXTURN 3	// ÇÑ ÅÏ ´ç ÁÖ»çÀ§´Â 3¹ø ±¼¸± ¼ö ÀÖÀ½
+#define MAXTURN 3	// í•œ í„´ ë‹¹ ì£¼ì‚¬ìœ„ëŠ” 3ë²ˆ êµ´ë¦´ ìˆ˜ ìˆìŒ
 #define NUMOFDICE 5
 
 class Game {
 private:
 	int turn_left;
-	vector<ScoreBoard> board;	// ÇÑ »ç¶÷ÀÇ Á¡¼öÆÇ ¸ğÀÓ -> ÃÑ Á¡¼öÆÇ
+	vector<ScoreBoard> board;	// í•œ ì‚¬ëŒì˜ ì ìˆ˜íŒ ëª¨ì„ -> ì´ ì ìˆ˜íŒ
 	Turn turn;
-	int numberOfPlayer;	// ÃÑ ÇÃ·¹ÀÌ¾î ¸î ¸íÀÎÁö
-	int currentPlayer;	// Áö±İ ÇÃ·¹ÀÌ¾î°¡ ´©±¸ÀÎÁö ¼ø¼­ (0, 1, 2, ...)·Î Ç¥Çö
+	int numberOfPlayer;	// ì´ í”Œë ˆì´ì–´ ëª‡ ëª…ì¸ì§€
+	int currentPlayer;	// ì§€ê¸ˆ í”Œë ˆì´ì–´ê°€ ëˆ„êµ¬ì¸ì§€ ìˆœì„œ (0, 1, 2, ...)ë¡œ í‘œí˜„
 
 public:
 	Game() {	// constructor
@@ -24,15 +24,15 @@ public:
 	}
 
 	void gameStart() {
-		// board ÃÊ±âÈ­
-		cout << "¸î¸íÀÌ ÇÃ·¹ÀÌ ÇÏ½Ã°Ú½À´Ï±î?: ";
+		// board ì´ˆê¸°í™”
+		cout << "ëª‡ëª…ì´ í”Œë ˆì´ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?: ";
 		cin >> numberOfPlayer;
 
-		//ÀÎ¿ø¼ö¿¡ µû¶ó board º¤ÅÍ ÃÊ±âÈ­
+		//ì¸ì›ìˆ˜ì— ë”°ë¼ board ë²¡í„° ì´ˆê¸°í™”
 		for (int i = 0; i < numberOfPlayer; i++) {		
 			board.push_back(ScoreBoard());
 		}	
-		//¸ğµç Á¡¼ö°¡ Ã¤¿öÁú¶§±îÁö turnStart È£Ãâ
+		//ëª¨ë“  ì ìˆ˜ê°€ ì±„ì›Œì§ˆë•Œê¹Œì§€ turnStart í˜¸ì¶œ
 		while (!isGameOver()) {
 			turnStart();
 		}
@@ -40,31 +40,31 @@ public:
 	}
 
 	void turnStart() {
-		displayBoard();	// turnÀÌ ½ÃÀÛÇÒ ¶§ Á¡¼öÆÇÀ» º¸¿©ÁÜ
+		displayBoard();	// turnì´ ì‹œì‘í•  ë•Œ ì ìˆ˜íŒì„ ë³´ì—¬ì¤Œ
 
-		int curTurn = 0;	// ÃÑ 3¹øÀÇ ±âÈ¸ Áß ÇöÀç ¸î ¹ø Â°ÀÎ°¡?
+		int curTurn = 0;	// ì´ 3ë²ˆì˜ ê¸°íšŒ ì¤‘ í˜„ì¬ ëª‡ ë²ˆ ì§¸ì¸ê°€?
 
-		while (curTurn < MAXTURN) {	// ÃÑ 3¹ø ±¼¸®´Â Áß
-			turn.diceRoll();	// ÁÖ»çÀ§ ±¼¸²
-			cout << endl << "ÁÖ»çÀ§¸¦ ±¼¸° °á°ú: ";
-			turn.displayDice();	// ±¼¸° ÁÖ»çÀ§ÀÇ °á°ú Ãâ·Â
+		while (curTurn < MAXTURN) {	// ì´ 3ë²ˆ êµ´ë¦¬ëŠ” ì¤‘
+			turn.diceRoll();	// ì£¼ì‚¬ìœ„ êµ´ë¦¼
+			cout << endl << "ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦° ê²°ê³¼: ";
+			turn.displayDice();	// êµ´ë¦° ì£¼ì‚¬ìœ„ì˜ ê²°ê³¼ ì¶œë ¥
 			cout << endl;
 			
-//			1. ³ª¿Â ÁÖ»çÀ§¸¦ turn¿¡¼­ Á¡¼ö °è»ê ¹× Ãâ·Â
-//			2. ÀúÀåÇÒ ÁÖ»çÀ§ÀÇ index¸¦ ÀÔ·Â (1 ~ 5)
-//			3. ÀúÀåÇÒ ÁÖ»çÀ§¸¦ keep¿¡ ÀúÀå
+//			1. ë‚˜ì˜¨ ì£¼ì‚¬ìœ„ë¥¼ turnì—ì„œ ì ìˆ˜ ê³„ì‚° ë° ì¶œë ¥
+//			2. ì €ì¥í•  ì£¼ì‚¬ìœ„ì˜ indexë¥¼ ì…ë ¥ (1 ~ 5)
+//			3. ì €ì¥í•  ì£¼ì‚¬ìœ„ë¥¼ keepì— ì €ì¥
 
-			turn.calScore();	// Á¡¼ö °è»ê ¹× Ãâ·Â
+			turn.calScore();	// ì ìˆ˜ ê³„ì‚° ë° ì¶œë ¥
 			cout << endl;
 
-			if (curTurn == MAXTURN - 1) break;	// »ç½Ç ¸¶Áö¸· ±âÈ¸¶ó¸é ´øÁö°í ³¡
+			if (curTurn == MAXTURN - 1) break;	// ì‚¬ì‹¤ ë§ˆì§€ë§‰ ê¸°íšŒë¼ë©´ ë˜ì§€ê³  ë
 
 			cin.ignore();
-			cout << "ÁÖ»çÀ§¸¦ ÀúÀåÇÏ½Ã°Ú½À´Ï±î? (y/n): "; char choice; cin >> choice;
+			cout << "ì£¼ì‚¬ìœ„ë¥¼ ì €ì¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): "; char choice; cin >> choice;
 
 			if (choice == 'y') {
-				cout << "ÀúÀåÇÒ ÁÖ»çÀ§¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä: ";
-				int index_store[5] = { 0, }; int i = 0;	// 0À¸·Î ÃÊ±âÈ­ ÇØµÎ°í, 0ÀÌ ¾Æ´Ñ ¾Öµé index¸¸ ÀúÀåÇÏ±â
+				cout << "ì €ì¥í•  ì£¼ì‚¬ìœ„ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”: ";
+				int index_store[5] = { 0, }; int i = 0;	// 0ìœ¼ë¡œ ì´ˆê¸°í™” í•´ë‘ê³ , 0ì´ ì•„ë‹Œ ì• ë“¤ indexë§Œ ì €ì¥í•˜ê¸°
 				cin.ignore();
 				while (cin >> index_store[i]) {
 					i++;
@@ -73,48 +73,51 @@ public:
 					}
 				}
 
-				turn.storeDice(index_store);	// index¸¦ ³Ñ°Ü turn¿¡ ÀÖ´Â dice¸¦ ÀúÀå
+				turn.storeDice(index_store);	// indexë¥¼ ë„˜ê²¨ turnì— ìˆëŠ” diceë¥¼ ì €ì¥
 			}
 			
 
-			if (!turn.isEmpty()) {	// ºñ¾îÀÖÀ¸¸é »¬ ÁÖ»çÀ§µµ ¾øÀ½.
+			if (!turn.isEmpty()) {	// ë¹„ì–´ìˆìœ¼ë©´ ëº„ ì£¼ì‚¬ìœ„ë„ ì—†ìŒ.
 				cin.ignore();
-				cout << "ÀúÀåµÈ ÁÖ»çÀ§: "; turn.printAllKeepedDice(); cout << endl;
-				cout << "ÀúÀåµÈ ÁÖ»çÀ§¿¡¼­ »©°Ú½À´Ï±î? (y/n): "; cin >> choice;
+				cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„: "; turn.printAllKeepedDice(); cout << endl;
+				cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„ì—ì„œ ë¹¼ê² ìŠµë‹ˆê¹Œ? (y/n): "; cin >> choice;
 				if (choice == 'y') {
 					cin.ignore();
-					cout << "ÀúÀåµÈ ÁÖ»çÀ§¿¡¼­ »¬ ÁÖ»çÀ§¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä: ";
+					cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„ì—ì„œ ëº„ ì£¼ì‚¬ìœ„ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”: ";
 					cin.ignore();
-					int index_delete[5] = { 0, }; int i = 0;	// ÀúÀåµÈ ÁÖ»çÀ§ Áß »¬ ÁÖ»çÀ§¸¦ °í¸§
+					int index_delete[5] = { 0, }; int i = 0;	// ì €ì¥ëœ ì£¼ì‚¬ìœ„ ì¤‘ ëº„ ì£¼ì‚¬ìœ„ë¥¼ ê³ ë¦„
 					while (cin >> index_delete[i]) i++;
-					turn.deleteDice(index_delete);	// »èÁ¦ÇÒ index¸¦ ³Ñ°ÜÁÜ
+					turn.deleteDice(index_delete);	// ì‚­ì œí•  indexë¥¼ ë„˜ê²¨ì¤Œ
 				}
 			}
 			
 
-			cout << "ÇÑ ¹ø ´õ ´øÁö½Ã°Ú½À´Ï±î? "; // ÀúÀåÇÏ°í ÁÖ»çÀ§¸¦ ´õ ±¼¸± °ÍÀÎÁö °áÁ¤
+			cout << "í•œ ë²ˆ ë” ë˜ì§€ì‹œê² ìŠµë‹ˆê¹Œ? "; // ì €ì¥í•˜ê³  ì£¼ì‚¬ìœ„ë¥¼ ë” êµ´ë¦´ ê²ƒì¸ì§€ ê²°ì •
 			cin.ignore();
 			cin >> choice;
 
-			if (choice == 'n') break;	// ´õ ¾È ±¼¸®¸é while¹®À» ºüÁ®³ª¿Í ¸ğµç ÁÖ»çÀ§¸¦ ÀúÀåÇÔ
+			if (choice == 'n') break;	// ë” ì•ˆ êµ´ë¦¬ë©´ whileë¬¸ì„ ë¹ ì ¸ë‚˜ì™€ ëª¨ë“  ì£¼ì‚¬ìœ„ë¥¼ ì €ì¥í•¨
 //			4. out
-//			keepµÈ DiceµéÀ» ´Ù Ãâ·Â(displayKeepedDice) -> »¬ DiceÀÇ index¸¦ ³Ñ°Ü¼­ turn.deleteDice(index)·Î ³Ñ°ÜÁà!
+//			keepëœ Diceë“¤ì„ ë‹¤ ì¶œë ¥(displayKeepedDice) -> ëº„ Diceì˜ indexë¥¼ ë„˜ê²¨ì„œ turn.deleteDice(index)ë¡œ ë„˜ê²¨ì¤˜!
 			
 			
 
 			curTurn++;
 		}
-		turn.storeAllDice();	// ¸ğµç ÁÖ»çÀ§ ÀúÀå
+		turn.storeAllDice();	// ëª¨ë“  ì£¼ì‚¬ìœ„ ì €ì¥
 
-		// Á¡¼ö ¾îµğ´Ù ÀúÀåÇÒÁö Á¤ÇÏ´Â ºÎºĞ
+
+		// ì ìˆ˜ ì–´ë””ë‹¤ ì €ì¥í• ì§€ ì •í•˜ëŠ” ë¶€ë¶„( ->ì—¬ê¸°ì— í•„ìš”ì—†ìŒ!)
+
+
 		
 		turnEnd();
 	}
 
 	void turnEnd() {
-		board[currentPlayer].updateScore();	// Á¡¼ö¸¦ ¾÷µ¥ÀÌÆ® ÇÔ
-		turn.initialize();	// turn °´Ã¼ ÃÊ±âÈ­ÇØ¼­ ´ÙÀ½ playerÀÇ Á¤º¸¸¦ ÀúÀåÇÒ ¼ö ÀÖµµ·Ï ÇÔ
-		currentPlayer = (currentPlayer + 1) % numberOfPlayer;	// ´ÙÀ½ »ç¶÷À» °¡¸£Å°µµ·Ï ÇÔ
+		board[currentPlayer].updateScore(turn.getKeep().getScores());	// ì ìˆ˜ë¥¼ ì—…ë°ì´íŠ¸ í•¨	(ì—¬ê¸°ì„œ ì ìˆ˜ ì–´ë””ë‹¤ ì €ì¥í• ì§€ ì…ë ¥ë°›ìŒ)	
+//		turn.initialize();	// turn ê°ì²´ ì´ˆê¸°í™”í•´ì„œ ë‹¤ìŒ playerì˜ ì •ë³´ë¥¼ ì €ì¥í•  ìˆ˜ ìˆë„ë¡ í•¨
+		currentPlayer = (currentPlayer + 1) % numberOfPlayer;	// ë‹¤ìŒ ì‚¬ëŒì„ ê°€ë¥´í‚¤ë„ë¡ í•¨
 	}
 
 	void winner() {
@@ -131,7 +134,7 @@ public:
 	}
 
 	void displayBoard() {
-		system("cls"); //È­¸é ºñ¿ò..
+		system("cls"); //í™”ë©´ ë¹„ì›€..
 		int i,j;
 
 		cout << "              ";
@@ -146,20 +149,22 @@ public:
 			for (j = 0; j < numberOfPlayer; j++) {
 				score boardScore = board[j].getScore(i);
 				cout.width(8);
-				if (boardScore.filled)				//Á¡¼ö°¡ Ã¤¿öÁø »óÅÂ¸é Á¡¼ö Ãâ·Â
+				if (boardScore.filled)				//ì ìˆ˜ê°€ ì±„ì›Œì§„ ìƒíƒœë©´ ì ìˆ˜ ì¶œë ¥
 					cout << board[j].getScore(i).score;
-				else								//Á¡¼ö°¡ ¾ÈÃ¤¿öÁ³À¸¸é "-" Ãâ·Â
+				else								//ì ìˆ˜ê°€ ì•ˆì±„ì›Œì¡Œìœ¼ë©´ "-" ì¶œë ¥
 					cout << "-";
 			}
 			cout << endl;
 		}
+		cout << "------------------------------------------------------------"<<endl;
 
 	}
 
-	bool isGameOver() {				//¸ğµç ÇÃ·¹ÀÌ¾îÀÇ board°¡ ¸ğµÎ Ã¤¿öÁö¸é true¸¦ ¹İÈ¯->°ÔÀÓ Á¾·á
+	bool isGameOver() {				//ëª¨ë“  í”Œë ˆì´ì–´ì˜ boardê°€ ëª¨ë‘ ì±„ì›Œì§€ë©´ trueë¥¼ ë°˜í™˜->ê²Œì„ ì¢…ë£Œ
 		for (int i = 0; i < numberOfPlayer;i++) {
 			if (board[i].isFilledAll() == false)
 				return false;
 		}
+		return true;
 	}
 };

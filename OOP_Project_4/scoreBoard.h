@@ -29,12 +29,12 @@ public:
 		scores[4] = { "Fives",0,false };
 		scores[5] = { "Sixes",0,false };
 
-		scores[6] = { "Four of a kind",0,false };
-		scores[7] = { "Full House",0,false };
-		scores[8] = { "Little Straight",0,false };
-		scores[9] = { "Big Straight",0,false };
-		scores[10] = { "Yacht",0,false };
-		scores[11] = { "Choice",0,false };
+		scores[6] = { "Choice",0,false };
+		scores[7] = { "Four of a kind",0,false };
+		scores[8] = { "Full House",0,false };
+		scores[9] = { "Little Straight",0,false };
+		scores[10] = { "Big Straight",0,false };
+		scores[11] = { "Yacht",0,false };
 
 
 	}
@@ -43,7 +43,30 @@ public:
 		return scores[n];
 	}
 
-	void updateScore() {
+	void updateScore(const int *scoreArr) {			//어떤 점수에 기록할 건지 입력 받은 후, 점수를 저장(.
+		cout << "어떤 점수에 기록할 것인지 선택하시오" << endl
+			<< "1:Ones" << endl
+			<< "2: Twos" << endl
+			<< "3: Threes" << endl
+			<< "4: Fours" << endl
+			<< "5: Fives" << endl
+			<< "6: Sixes" << endl
+			<< "7: Choice" << endl
+			<< "8: Four of a kind" << endl
+			<< "9: Full House" << endl
+			<< "10: Little Straight" << endl
+			<< "11: Big Straight" << endl
+			<< "12: Yacht" << endl<< endl
+			<<"입력>> ";
+
+		int n;
+		cin >> n;
+		while (scores[n - 1].filled) {
+			cout << "이미 기록된 점수입니다. 다시 입력하세요" << endl << "입력>> ";
+			cin >> n;
+		}
+		scores[n - 1].score = scoreArr[n - 1];
+		scores[n - 1].filled = true;
 
 	}
 
@@ -72,4 +95,6 @@ public:
 			return true;
 		}
 	}
+	
+
 };
