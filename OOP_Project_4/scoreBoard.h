@@ -2,22 +2,24 @@
 #include<iostream>
 #include<string>
 
+#define NUMOFSCORES 12
+
 using namespace std;
 
 typedef struct Score {
 	string name;
 	int score;
-	bool filled;	//ÇØ´ç Á·º¸?°¡ Ã¤¿öÁ³´ÂÁö ¿©ºÎ
+	bool filled;	//í•´ë‹¹ ì¡±ë³´?ê°€ ì±„ì›Œì¡ŒëŠ”ì§€ ì—¬ë¶€
 }score;
 
-class ScoreBoard {	// ÇÑ »ç¶÷´ç Á¡¼öÆÇ
+class ScoreBoard {	// í•œ ì‚¬ëŒë‹¹ ì ìˆ˜íŒ
 private:
 	string playerName;
-	Score scores[12];		//º¤ÅÍ¿¡¼­ ¹è¿­·Î ¹Ù²åÀ½!
+	Score scores[12];		//ë²¡í„°ì—ì„œ ë°°ì—´ë¡œ ë°”ê¿¨ìŒ!
 	int totalScore;		
 
 public:
-	ScoreBoard()		//¾îÂ÷ÇÇ ¸ğµç Á¡¼ö°¡ Ã¤¿öÁ®¾ß µÇ¹Ç·Î.. Á¡¼ö º¤ÅÍ ¸¸µé°í ½ÃÀÛ.
+	ScoreBoard()		//ì–´ì°¨í”¼ ëª¨ë“  ì ìˆ˜ê°€ ì±„ì›Œì ¸ì•¼ ë˜ë¯€ë¡œ.. ì ìˆ˜ ë²¡í„° ë§Œë“¤ê³  ì‹œì‘.
 	{
 		totalScore = 0;
 
@@ -43,8 +45,8 @@ public:
 		return scores[n];
 	}
 
-	void updateScore(const int *scoreArr) {			//¾î¶² Á¡¼ö¿¡ ±â·ÏÇÒ °ÇÁö ÀÔ·Â ¹ŞÀº ÈÄ, Á¡¼ö¸¦ ÀúÀå(.
-		cout << "¾î¶² Á¡¼ö¿¡ ±â·ÏÇÒ °ÍÀÎÁö ¼±ÅÃÇÏ½Ã¿À" << endl
+	void updateScore(const int *scoreArr) {			//ì–´ë–¤ ì ìˆ˜ì— ê¸°ë¡í•  ê±´ì§€ ì…ë ¥ ë°›ì€ í›„, ì ìˆ˜ë¥¼ ì €ì¥(.
+		cout << "ì–´ë–¤ ì ìˆ˜ì— ê¸°ë¡í•  ê²ƒì¸ì§€ ì„ íƒí•˜ì‹œì˜¤" << endl
 			<< "1:Ones" << endl
 			<< "2: Twos" << endl
 			<< "3: Threes" << endl
@@ -57,12 +59,12 @@ public:
 			<< "10: Little Straight" << endl
 			<< "11: Big Straight" << endl
 			<< "12: Yacht" << endl<< endl
-			<<"ÀÔ·Â>> ";
+			<<"ì…ë ¥>> ";
 
 		int n;
 		cin >> n;
 		while (scores[n - 1].filled) {
-			cout << "ÀÌ¹Ì ±â·ÏµÈ Á¡¼öÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä" << endl << "ÀÔ·Â>> ";
+			cout << "ì´ë¯¸ ê¸°ë¡ëœ ì ìˆ˜ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•˜ì„¸ìš”" << endl << "ì…ë ¥>> ";
 			cin >> n;
 		}
 		scores[n - 1].score = scoreArr[n - 1];
@@ -81,19 +83,20 @@ public:
 	}
 
 	int calTotalResult() {
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < NUMOFSCORES; i++) {
 			if(scores[i].filled)
 				totalScore += scores[i].score;
 		}
 		return totalScore;
 	}
 
-	bool isFilledAll() {							//Á¡¼öÆÇÀÇ ¸ğµç Á¡¼ö°¡ Ã¤¿öÁ³´ÂÁö¸¦ Ã¼Å©ÇÏ¿© ¹İÈ¯, ÀüºÎ´Ù Ã¤¿öÁ³À¸¸é °ÔÀÓ Á¾·á½ÃÄÑ¾ßÇÔ
-		for (int i = 0; i < 12; i++) {
+	bool isFilledAll() {							//ì ìˆ˜íŒì˜ ëª¨ë“  ì ìˆ˜ê°€ ì±„ì›Œì¡ŒëŠ”ì§€ë¥¼ ì²´í¬í•˜ì—¬ ë°˜í™˜, ì „ë¶€ë‹¤ ì±„ì›Œì¡Œìœ¼ë©´ ê²Œì„ ì¢…ë£Œì‹œì¼œì•¼í•¨
+		for (int i = 0; i < NUMOFSCORES; i++) {
 			if (scores[i].filled == false)
 				return false;
-			return true;
 		}
+
+		return true;
 	}
 	
 

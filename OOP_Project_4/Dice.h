@@ -5,8 +5,8 @@
 
 class Dice {
 private:
-	int number;	// ÁÖ»çÀ§ÀÇ ´«
-	bool keeped = false; // ÁÖ»çÀ§°¡ keep µÇ¾ú´ÂÁö ¾Æ´ÑÁö
+	int number;	// ì£¼ì‚¬ìœ„ì˜ ëˆˆ
+	bool keeped = false; // ì£¼ì‚¬ìœ„ê°€ keep ë˜ì—ˆëŠ”ì§€ ì•„ë‹Œì§€
 
 public:
 	Dice() {	// constructor
@@ -14,11 +14,7 @@ public:
 	}
 
 
-	void roll() {	// ÁÖ»çÀ§¸¦ ±¼¸²
-		//srand(time(NULL));	// ³­¼ö¸¦ À§ÇÑ seed ¼³Á¤
-
-		//this->number = (rand() % 6) + 1;	// number¿¡ 1 ~ 6 Áß ÇÏ³ª¸¦ randomÇÏ°Ô ÀúÀå
-
+	void roll() {	// ì£¼ì‚¬ìœ„ë¥¼ êµ´ë¦¼
 		// Use the current time as a seed
 		unsigned seed = static_cast<unsigned>(std::chrono::system_clock::now().time_since_epoch().count());
 
@@ -42,7 +38,7 @@ public:
 		return number;
 	}
 
-	void setKeeped() {	// ±»ÀÌ ¸Å°³º¯¼ö ¾øÀÌ ±×³É true·Î ¼³Á¤ÇÏ¸é µÉ °Í °°¾Æ
+	void setKeeped() {	// êµ³ì´ ë§¤ê°œë³€ìˆ˜ ì—†ì´ ê·¸ëƒ¥ trueë¡œ ì„¤ì •í•˜ë©´ ë  ê²ƒ ê°™ì•„
 		this->keeped = true;
 	}
 

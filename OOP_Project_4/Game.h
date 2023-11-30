@@ -116,7 +116,7 @@ public:
 
 	void turnEnd() {
 		board[currentPlayer].updateScore(turn.getKeep().getScores());	// 점수를 업데이트 함	(여기서 점수 어디다 저장할지 입력받음)	
-//		turn.initialize();	// turn 객체 초기화해서 다음 player의 정보를 저장할 수 있도록 함
+		turn.initialize();	// turn 객체 초기화해서 다음 player의 정보를 저장할 수 있도록 함
 		currentPlayer = (currentPlayer + 1) % numberOfPlayer;	// 다음 사람을 가르키도록 함
 	}
 

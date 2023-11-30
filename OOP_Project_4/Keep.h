@@ -6,7 +6,7 @@
 
 class Keep {
 private:
-	vector<Dice> stored_Die; // Dice °´Ã¼ vector
+	vector<Dice> stored_Die; // Dice ê°ì²´ vector
 	int scores[13]; /*
 	[0-5]		Ones, Twos, Threes, Fours, Fives, Sixes
 	[6]			Choice
@@ -28,11 +28,11 @@ public:
 	}
 
 	void deleteNumber(Dice* dice) {
-		dice->setOut();	// keepÀ» false·Î ³Ñ±è
+		dice->setOut();	// // keepì„ falseë¡œ ë„˜ê¹€
 	}
 
 	void calScore() {
-		// Á¡¼ö °è»ê
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		int ones = 0;
 		int twos = 0;
 		int threes = 0;
@@ -47,7 +47,7 @@ public:
 		int bs = 0;
 		int yacht = 0;
 		int bonus = 0;
-		int count[6] = { 0, }; // DiceµéÀÌ ³ª¿Â È½¼ö
+		int count[6] = { 0, }; // Diceë“¤ì´ ë‚˜ì˜¨ íšŸìˆ˜
 
 		// ONES, TWOS, THREES, FOURS, FIVES, SIXES, CHOICE
 		for (const Dice& dice : stored_Die) {
@@ -94,7 +94,7 @@ public:
 		//FULL HOUSE
 		bool sameThree = false;
 		bool sameTwo = false;
-		int sameThreeDiceNum, sameTwoDiceNum; // ¶È°°Àº 3°³ÀÇ ÁÖ»çÀ§ÀÇ ´«, ¶È°°Àº 2°³ÀÇ ÁÖ»çÀ§ÀÇ ´«
+		int sameThreeDiceNum, sameTwoDiceNum; // ë˜‘ê°™ì€ 3ê°œì˜ ì£¼ì‚¬ìœ„ì˜ ëˆˆ, ë˜‘ê°™ì€ 2ê°œì˜ ì£¼ì‚¬ìœ„ì˜ ëˆˆ
 		for (int i = 0; i < 6; i++) {
 			if (count[i] == 3) {
 				sameThree = true;

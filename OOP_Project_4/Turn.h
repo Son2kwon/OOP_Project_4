@@ -92,7 +92,7 @@ public:
 
 	Keep getKeep() {
 		return keep;
-
+	}
 
 	void printAllKeepedDice() {	// 저장된 모든 주사위의 눈을 출력하는 함수
 		for (int i = 0; i < NUMOFDICE; i++) {
