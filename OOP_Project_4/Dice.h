@@ -11,6 +11,7 @@ private:
 public:
 	Dice() {	// constructor
 		number = 0;
+		keeped = false;
 	}
 
 

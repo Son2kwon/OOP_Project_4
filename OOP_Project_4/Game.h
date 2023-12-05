@@ -12,7 +12,6 @@ using namespace std;
 
 class Game {
 private:
-	int turn_left;
 	vector<ScoreBoard> board;	// 한 사람의 점수판 모임 -> 총 점수판
 	Turn turn;
 	int numberOfPlayer;	// 총 플레이어 몇 명인지
