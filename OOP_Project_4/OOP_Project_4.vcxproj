@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="diceView.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="Keep.h" />
     <ClInclude Include="scoreBoard.h" />
     <ClInclude Include="Turn.h" />
