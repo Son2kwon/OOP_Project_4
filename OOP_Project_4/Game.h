@@ -149,6 +149,10 @@ public:
 	void winner() {
 		int winner_index = 0;
 		int winner_score = board[0].calTotalResult();
+		if (board.size() == 1) {
+			cout << "(Score: " << winner_score << ")" << endl;
+			return;
+		}
 		for (int i = 0; i < board.size(); i++) {
 			int score = board[i].calTotalResult();
 			if (score> winner_score) {
