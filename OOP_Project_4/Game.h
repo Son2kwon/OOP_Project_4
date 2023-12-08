@@ -92,7 +92,7 @@ public:
 				while (cin >> index_store[i]) {
 					i++;
 					if (cin.peek() == '\n') { // Check for Enter key
-						if (validInput(index_store)) {
+						if (validInput(index_store)) { // 입력이 유효한지 판단하는 함수
 							break;
 						}
 						else {
@@ -128,8 +128,19 @@ public:
 					int index_delete[5] = { 0, }; int i = 0;	// 저장된 주사위 중 뺄 주사위를 고름
 					while (cin >> index_delete[i]) {			//뺄 주사위 입력받음
 						i++;
-						if (cin.peek() == '\n') {  // Check for Enter key
-							break;
+						if (cin.peek() == '\n') { // Check for Enter key
+							if (validInput(index_delete)) {
+								break;
+							}
+							else {
+								cout << "다시 입력하세요." << endl;
+								i = 0;
+								fill(begin(index_delete), end(index_delete), 0);
+								cin.clear();
+								cin.ignore();
+								cout << "저장된 주사위에서 뺄 주사위를 선택해주세요: ";
+								continue;
+							}
 						}
 					}
 
