@@ -91,10 +91,21 @@ public:
 				cin.ignore();
 				while (cin >> index_store[i]) {
 					i++;
-					if (cin.peek() == '\n') {  // Check for Enter key
-						break;
+					if (cin.peek() == '\n') { // Check for Enter key
+						if (validInput(index_store)) {
+							break;
+						}
+						else {
+							cout << "다시 입력하세요." << endl;
+							i = 0;
+							fill(begin(index_store), end(index_store), 0);
+							cin.clear();
+							cin.ignore();
+							cout << "저장할 주사위를 선택해주세요: ";
+							continue;
+						}
 					}
-				}	
+				}
 
 				turn.storeDice(index_store);	// index를 넘겨 turn에 있는 dice를 저장
 				storeDiceView(index_store);		//diceView객체에도 keep 상태 저장
@@ -152,6 +163,29 @@ public:
 
 		
 		turnEnd();
+	}
+
+	bool validInput(const int* arr) {
+		bool outOfRange = false;
+		for (int i = 0; i < 5; i++) {
+			if (arr[i] < 0 || arr[i] > 5) {
+				outOfRange = true;
+			}
+
+			/*
+			for (int j = 0; j < i; j++) {
+				if (arr[i] == arr[j]) {
+					cout << "중복된 주사위 값이 포함되어 있습니다. 다른 값을 입력하세요." << endl;
+					return false;
+				}
+			}
+			*/
+		}
+		if(outOfRange) {
+			cout << "올바르지 않은 주사위 값이 포함되어 있습니다. 1에서 5 사이의 값을 입력하세요." << endl;
+			return false;
+		}
+		return true;
 	}
 
 	void turnEnd() {
