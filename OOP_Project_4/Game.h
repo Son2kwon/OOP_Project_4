@@ -178,24 +178,29 @@ public:
 
 	bool validInput(const int* arr) {
 		bool outOfRange = false;
+		bool duplicated = false;
+
 		for (int i = 0; i < 5; i++) {
 			if (arr[i] < 0 || arr[i] > 5) {
-				outOfRange = true;
+				outOfRange = true; // 값이 올바르게 입력되었는지
 			}
 
-			/*
-			for (int j = 0; j < i; j++) {
-				if (arr[i] == arr[j]) {
-					cout << "중복된 주사위 값이 포함되어 있습니다. 다른 값을 입력하세요." << endl;
-					return false;
+			for (int j = 4; j > i; j--) {
+				if (arr[i] == arr[j] && arr[i] != 0) {
+					duplicated = true; // 중복된 값이 있는지
 				}
 			}
-			*/
 		}
+
 		if(outOfRange) {
 			cout << "올바르지 않은 주사위 값이 포함되어 있습니다. 1에서 5 사이의 값을 입력하세요." << endl;
 			return false;
 		}
+		else if (duplicated) {
+			cout << "중복된 주사위 값이 포함되어 있습니다. 다른 값을 입력하세요." << endl;
+			return false;
+		}
+
 		return true;
 	}
 
