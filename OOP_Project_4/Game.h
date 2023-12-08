@@ -2,27 +2,28 @@
 #include<iostream>
 #include<string>
 #include<Windows.h>
+#include <conio.h>
 #include"Dice.h"
 #include"scoreBoard.h"
 #include"Turn.h"
 #include"diceView.h"
 using namespace std;
 
-#define MAXTURN 3	// í•œ í„´ ë‹¹ ì£¼ì‚¬ìœ„ëŠ” 3ë²ˆ êµ´ë¦´ ìˆ˜ ìˆìŒ
+#define MAXTURN 3	// ÇÑ ÅÏ ´ç ÁÖ»çÀ§´Â 3¹ø ±¼¸± ¼ö ÀÖÀ½
 #define NUMOFDICE 5
 
-#define DICEVIEWSTART 20	//ì»¤ì„œ ì´ë™ìœ„ì¹˜ ìƒìˆ˜ë“¤..
-#define STARTPOINT 25
-#define STARTPOINT2 27
+#define DICEVIEWSTART 3	//Ä¿¼­ ÀÌµ¿À§Ä¡ »ó¼öµé..
+#define STARTPOINT2 21
+#define SCORESTART 50
 
 class Game {
 private:
 	int turn_left;
-	vector<ScoreBoard> board;	// í•œ ì‚¬ëŒì˜ ì ìˆ˜íŒ ëª¨ì„ -> ì´ ì ìˆ˜íŒ
+	vector<ScoreBoard> board;	// ÇÑ »ç¶÷ÀÇ Á¡¼öÆÇ ¸ğÀÓ -> ÃÑ Á¡¼öÆÇ
 	Turn turn;
-	int numberOfPlayer;	// ì´ í”Œë ˆì´ì–´ ëª‡ ëª…ì¸ì§€
-	int currentPlayer;	// ì§€ê¸ˆ í”Œë ˆì´ì–´ê°€ ëˆ„êµ¬ì¸ì§€ ìˆœì„œ (0, 1, 2, ...)ë¡œ í‘œí˜„
-	diceView dices[NUMOFDICE];	//diceViewëŠ” ì½˜ì†”ì°½ì˜ ì£¼ì‚¬ìœ„ ì¶œë ¥ì„ ìœ„í•œ í´ë˜ìŠ¤.
+	int numberOfPlayer;	// ÃÑ ÇÃ·¹ÀÌ¾î ¸î ¸íÀÎÁö
+	int currentPlayer;	// Áö±İ ÇÃ·¹ÀÌ¾î°¡ ´©±¸ÀÎÁö ¼ø¼­ (0, 1, 2, ...)·Î Ç¥Çö
+	diceView dices[NUMOFDICE];	//diceView´Â ÄÜ¼ÖÃ¢ÀÇ ÁÖ»çÀ§ Ãâ·ÂÀ» À§ÇÑ Å¬·¡½º.
 
 public:
 	Game() {	// constructor
@@ -31,17 +32,22 @@ public:
 
 	void gameStart() {
 
-		cout << " << Yatch Game >>" << endl<<endl;
+		int key;
+		cout << "  << Yatch Game >>" << endl << endl;
+		cout << "Press Enter to start!!";		//enter ´©¸£¸é ½ÃÀÛ
 
-		// board ì´ˆê¸°í™”
-		cout << "ëª‡ëª…ì´ í”Œë ˆì´ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?: ";
+		while(key=_getch()!=13){}	//enter Å° ÀÔ·Â °¨Áö
+
+
+		// board ÃÊ±âÈ­
+		cout << endl<<endl<<"¸î¸íÀÌ ÇÃ·¹ÀÌ ÇÏ½Ã°Ú½À´Ï±î?: ";
 		cin >> numberOfPlayer;
 
-		//ì¸ì›ìˆ˜ì— ë”°ë¼ board ë²¡í„° ì´ˆê¸°í™”
+		//ÀÎ¿ø¼ö¿¡ µû¶ó board º¤ÅÍ ÃÊ±âÈ­
 		for (int i = 0; i < numberOfPlayer; i++) {		
 			board.push_back(ScoreBoard());
 		}
-		//ëª¨ë“  ì ìˆ˜ê°€ ì±„ì›Œì§ˆë•Œê¹Œì§€ turnStart í˜¸ì¶œ
+		//¸ğµç Á¡¼ö°¡ Ã¤¿öÁú¶§±îÁö turnStart È£Ãâ
 		while (!isGameOver()) {
 			turnStart();
 		}
@@ -50,87 +56,98 @@ public:
 
 	void turnStart() {
 
-		initDiceView();		//diceViewë¥¼ ì´ˆê¸°í™”(ìœ„ì¹˜, keepìƒíƒœ)
+		initDiceView();		//diceView¸¦ ÃÊ±âÈ­(À§Ä¡, keep»óÅÂ)
 
-		int curTurn = 0;	// ì´ 3ë²ˆì˜ ê¸°íšŒ ì¤‘ í˜„ì¬ ëª‡ ë²ˆ ì§¸ì¸ê°€?
+		int curTurn = 0;	// ÃÑ 3¹øÀÇ ±âÈ¸ Áß ÇöÀç ¸î ¹ø Â°ÀÎ°¡?
 
-		while (curTurn < MAXTURN) {	// ì´ 3ë²ˆ êµ´ë¦¬ëŠ” ì¤‘
-			displayBoard();		//ì£¼ì‚¬ìœ„ ë˜ì§ˆë•Œë§ˆë‹¤ ì ìˆ˜íŒë„ ì¶œë ¥ë˜ëŠ”ê±¸ë¡œ..
-			turn.diceRoll();	// ì£¼ì‚¬ìœ„ êµ´ë¦¼
+		while (curTurn < MAXTURN) {	// ÃÑ 3¹ø ±¼¸®´Â Áß
+			displayBoard();		//ÁÖ»çÀ§ ´øÁú¶§¸¶´Ù Á¡¼öÆÇµµ Ãâ·ÂµÇ´Â°É·Î..
+			turn.diceRoll();	// ÁÖ»çÀ§ ±¼¸²
 			Sleep(500);
-			cout  << "Roll the Dice... ";
+
+			cout << "[Player " << currentPlayer + 1 << "]" << endl<<endl;
+			Sleep(1000);
 			
 			drawDices();
 			
 
-//			1. ë‚˜ì˜¨ ì£¼ì‚¬ìœ„ë¥¼ turnì—ì„œ ì ìˆ˜ ê³„ì‚° ë° ì¶œë ¥
-//			2. ì €ì¥í•  ì£¼ì‚¬ìœ„ì˜ indexë¥¼ ì…ë ¥ (1 ~ 5)
-//			3. ì €ì¥í•  ì£¼ì‚¬ìœ„ë¥¼ keepì— ì €ì¥
+//			1. ³ª¿Â ÁÖ»çÀ§¸¦ turn¿¡¼­ Á¡¼ö °è»ê ¹× Ãâ·Â
+//			2. ÀúÀåÇÒ ÁÖ»çÀ§ÀÇ index¸¦ ÀÔ·Â (1 ~ 5)
+//			3. ÀúÀåÇÒ ÁÖ»çÀ§¸¦ keep¿¡ ÀúÀå
 
-			turn.calScore();	// ì ìˆ˜ ê³„ì‚° ë° ì¶œë ¥
+			Sleep(600);
+			turn.calScore();	// Á¡¼ö °è»ê ¹× Ãâ·Â
 			cout << endl;
+			Sleep(600);
 
-			if (curTurn == MAXTURN - 1) break;	// ì‚¬ì‹¤ ë§ˆì§€ë§‰ ê¸°íšŒë¼ë©´ ë˜ì§€ê³  ë
+			if (curTurn == MAXTURN - 1) break;	// »ç½Ç ¸¶Áö¸· ±âÈ¸¶ó¸é ´øÁö°í ³¡
 
 			cin.ignore();
-			cout << "ì£¼ì‚¬ìœ„ë¥¼ ì €ì¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): "; char choice; cin >> choice;
+			cout << "ÁÖ»çÀ§¸¦ ÀúÀåÇÏ½Ã°Ú½À´Ï±î? (y/n): "; char choice; cin >> choice;
 
 			if (choice == 'y') {
-				cout << "ì €ì¥í•  ì£¼ì‚¬ìœ„ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”: ";
-				int index_store[5] = { 0, }; int i = 0;	// 0ìœ¼ë¡œ ì´ˆê¸°í™” í•´ë‘ê³ , 0ì´ ì•„ë‹Œ ì• ë“¤ indexë§Œ ì €ì¥í•˜ê¸°
+				cout << "ÀúÀåÇÒ ÁÖ»çÀ§¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä: ";
+				int index_store[5] = { 0, }; int i = 0;	// 0À¸·Î ÃÊ±âÈ­ ÇØµÎ°í, 0ÀÌ ¾Æ´Ñ ¾Öµé index¸¸ ÀúÀåÇÏ±â
 				cin.ignore();
 				while (cin >> index_store[i]) {
 					i++;
 					if (cin.peek() == '\n') {  // Check for Enter key
 						break;
 					}
-				}
-				dices[i].gotoxy(0, STARTPOINT2);	//ì»¤ì„œì´ë™
-				dices[i].ClearScrollback();			
+				}	
 
-				turn.storeDice(index_store);	// indexë¥¼ ë„˜ê²¨ turnì— ìˆëŠ” diceë¥¼ ì €ì¥
-				storeDiceView(index_store);		//diceViewê°ì²´ì—ë„ keep ìƒíƒœ ì €ì¥
+				turn.storeDice(index_store);	// index¸¦ ³Ñ°Ü turn¿¡ ÀÖ´Â dice¸¦ ÀúÀå
+				storeDiceView(index_store);		//diceView°´Ã¼¿¡µµ keep »óÅÂ ÀúÀå
 			}
 			
 
-			if (!turn.isEmpty()) {	// ë¹„ì–´ìˆìœ¼ë©´ ëº„ ì£¼ì‚¬ìœ„ë„ ì—†ìŒ.
+			if (!turn.isEmpty()) {	// ºñ¾îÀÖÀ¸¸é »¬ ÁÖ»çÀ§µµ ¾øÀ½.
+
+				dices[0].gotoxy(0, STARTPOINT2);
+				dices[0].ClearScrollback();
+				Sleep(700);
+
 				cin.ignore();
-				Sleep(700);
-				cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„: "; turn.printAllKeepedDice(); cout << endl;
-				Sleep(700);
-				cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„ì—ì„œ ë¹¼ê² ìŠµë‹ˆê¹Œ? (y/n): "; cin >> choice;
+				//cout << "ÀúÀåµÈ ÁÖ»çÀ§: "; turn.printAllKeepedDice(); cout << endl;		//ÀÌ ¶óÀÎ »èÁ¦ÇÏ°í ÁÖ»çÀ§ ui¿¡ Ç¥½ÃÇÔ!
+				cout << "ÀúÀåµÈ ÁÖ»çÀ§¿¡¼­ »©°Ú½À´Ï±î? (y/n): "; cin >> choice;
 				if (choice == 'y') {
 					cin.ignore();
-					cout << "ì €ì¥ëœ ì£¼ì‚¬ìœ„ì—ì„œ ëº„ ì£¼ì‚¬ìœ„ë¥¼ ì„ íƒí•´ì£¼ì„¸ìš”: ";
-					cin.ignore();
-					int index_delete[5] = { 0, }; int i = 0;	// ì €ì¥ëœ ì£¼ì‚¬ìœ„ ì¤‘ ëº„ ì£¼ì‚¬ìœ„ë¥¼ ê³ ë¦„
-					while (cin >> index_delete[i]) i++;
+					cout << "ÀúÀåµÈ ÁÖ»çÀ§¿¡¼­ »¬ ÁÖ»çÀ§¸¦ ¼±ÅÃÇØÁÖ¼¼¿ä: ";
+					//cin.ignore();
+					int index_delete[5] = { 0, }; int i = 0;	// ÀúÀåµÈ ÁÖ»çÀ§ Áß »¬ ÁÖ»çÀ§¸¦ °í¸§
+					while (cin >> index_delete[i]) {			//»¬ ÁÖ»çÀ§ ÀÔ·Â¹ŞÀ½
+						i++;
+						if (cin.peek() == '\n') {  // Check for Enter key
+							break;
+						}
+					}
 
-					dices[i].gotoxy(0, STARTPOINT2); //ì»¤ì„œ ì´ë™
-					dices[i].ClearScrollback();
+					dices[0].gotoxy(0, STARTPOINT2); //Ä¿¼­ ÀÌµ¿
+					dices[0].ClearScrollback();
 
-					turn.deleteDice(index_delete);	// ì‚­ì œí•  indexë¥¼ ë„˜ê²¨ì¤Œ
+					turn.deleteDice(index_delete);	// »èÁ¦ÇÒ index¸¦ ³Ñ°ÜÁÜ
 					deleteDiceVIew(index_delete);	
 				}
 			}
 			
-
-			cout << "í•œ ë²ˆ ë” ë˜ì§€ì‹œê² ìŠµë‹ˆê¹Œ? "; // ì €ì¥í•˜ê³  ì£¼ì‚¬ìœ„ë¥¼ ë” êµ´ë¦´ ê²ƒì¸ì§€ ê²°ì •
+			dices[0].gotoxy(0, STARTPOINT2); //Ä¿¼­ ÀÌµ¿
+			dices[0].ClearScrollback();
+			cout << "ÇÑ ¹ø ´õ ´øÁö½Ã°Ú½À´Ï±î? (y/n): "; // ÀúÀåÇÏ°í ÁÖ»çÀ§¸¦ ´õ ±¼¸± °ÍÀÎÁö °áÁ¤
 			cin.ignore();
 			cin >> choice;
 
-			if (choice == 'n') break;	// ë” ì•ˆ êµ´ë¦¬ë©´ whileë¬¸ì„ ë¹ ì ¸ë‚˜ì™€ ëª¨ë“  ì£¼ì‚¬ìœ„ë¥¼ ì €ì¥í•¨
+			if (choice == 'n') break;	// ´õ ¾È ±¼¸®¸é while¹®À» ºüÁ®³ª¿Í ¸ğµç ÁÖ»çÀ§¸¦ ÀúÀåÇÔ
 //			4. out
-//			keepëœ Diceë“¤ì„ ë‹¤ ì¶œë ¥(displayKeepedDice) -> ëº„ Diceì˜ indexë¥¼ ë„˜ê²¨ì„œ turn.deleteDice(index)ë¡œ ë„˜ê²¨ì¤˜!
+//			keepµÈ DiceµéÀ» ´Ù Ãâ·Â(displayKeepedDice) -> »¬ DiceÀÇ index¸¦ ³Ñ°Ü¼­ turn.deleteDice(index)·Î ³Ñ°ÜÁà!
 			
 
 
 			curTurn++;
 		}
-		turn.storeAllDice();	// ëª¨ë“  ì£¼ì‚¬ìœ„ ì €ì¥
+		turn.storeAllDice();	// ¸ğµç ÁÖ»çÀ§ ÀúÀå
 
 
-		// ì ìˆ˜ ì–´ë””ë‹¤ ì €ì¥í• ì§€ ì •í•˜ëŠ” ë¶€ë¶„( ->ì—¬ê¸°ì— í•„ìš”ì—†ìŒ!)
+		// Á¡¼ö ¾îµğ´Ù ÀúÀåÇÒÁö Á¤ÇÏ´Â ºÎºĞ( ->¿©±â¿¡ ÇÊ¿ä¾øÀ½!)
 
 
 		
@@ -138,17 +155,26 @@ public:
 	}
 
 	void turnEnd() {
-		dices[0].gotoxy(0, STARTPOINT);	//ì»¤ì„œì´ë™, ì•„ë˜ í™”ë©´ì§€ì›€
+
+		dices[0].gotoxy(0, STARTPOINT2);	//Ä¿¼­ÀÌµ¿, ¾Æ·¡ È­¸éÁö¿ò
 		dices[0].ClearScrollback();
 
-		board[currentPlayer].updateScore(turn.getKeep().getScores());	// ì ìˆ˜ë¥¼ ì—…ë°ì´íŠ¸ í•¨	(ì—¬ê¸°ì„œ ì ìˆ˜ ì–´ë””ë‹¤ ì €ì¥í• ì§€ ì…ë ¥ë°›ìŒ)	
-		turn.initialize();	// turn ê°ì²´ ì´ˆê¸°í™”í•´ì„œ ë‹¤ìŒ playerì˜ ì •ë³´ë¥¼ ì €ì¥í•  ìˆ˜ ìˆë„ë¡ í•¨
-		currentPlayer = (currentPlayer + 1) % numberOfPlayer;	// ë‹¤ìŒ ì‚¬ëŒì„ ê°€ë¥´í‚¤ë„ë¡ í•¨
+		Sleep(700);
+		board[currentPlayer].updateScore(turn.getKeep().getScores());	// Á¡¼ö¸¦ ¾÷µ¥ÀÌÆ® ÇÔ	(¿©±â¼­ Á¡¼ö ¾îµğ´Ù ÀúÀåÇÒÁö ÀÔ·Â¹ŞÀ½)	
+		turn.initialize();	// turn °´Ã¼ ÃÊ±âÈ­ÇØ¼­ ´ÙÀ½ playerÀÇ Á¤º¸¸¦ ÀúÀåÇÒ ¼ö ÀÖµµ·Ï ÇÔ
+		currentPlayer = (currentPlayer + 1) % numberOfPlayer;	// ´ÙÀ½ »ç¶÷À» °¡¸£Å°µµ·Ï ÇÔ
 	}
 
 	void winner() {
+		dices[0].gotoxy(0, 0);
+		system("cls");
+
+		displayBoard();
+
+		dices[0].gotoxy(0, 3);
 		int winner_index = 0;
 		int winner_score = board[0].calTotalResult();
+
 		if (board.size() == 1) {
 			cout << "(Score: " << winner_score << ")" << endl;
 			return;
@@ -160,38 +186,53 @@ public:
 				winner_score = score;
 			}
 		}
-		cout << "Winner is player " << winner_index << ", (Score: " << winner_score << ")" << endl;
+		cout << "Winner is player " << winner_index+1 << endl<<"(Score: " << winner_score << ")" << endl;
+
+		dices[0].gotoxy(0, 25);
+
+
 	}
 
-	void displayBoard() {
-		system("cls"); //í™”ë©´ ë¹„ì›€..
+	void displayBoard() {			//ÄÜ¼ÖÃ¢ Ä¿¼­ ÀÌµ¿ ¹üÀ§ ¹®Á¦¶§¹®¿¡ ¿ìÃø¿¡ Ç¥½ÃÇÏ±â·Î..
+		system("cls"); //È­¸é ºñ¿ò..
 		int i,j;
-		cout << "â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€<Score Board>â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€" << endl;
+		int y = 0;	//Ä¿¼­ yÃà À§Ä¡
+
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
+		cout << "¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡<Score Board>¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡" << endl;
+
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
 		cout << "               ";
 		for (i = 0; i < numberOfPlayer; i++) {
 			if(i==currentPlayer)
-				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);	//currentPlayerëŠ” ê¸€ììƒ‰ ì´ˆë¡ìƒ‰ìœ¼ë¡œ í‘œì‹œ
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);	//currentPlayer´Â ±ÛÀÚ»ö ÃÊ·Ï»öÀ¸·Î Ç¥½Ã
 			cout  << " Player" << i+1;
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);	//ê¸€ììƒ‰ ë‹¤ì‹œ í°ìƒ‰ìœ¼ë¡œ ì„¤ì •
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);	//±ÛÀÚ»ö ´Ù½Ã Èò»öÀ¸·Î ¼³Á¤
 		}
-		cout << endl;
+		//cout << endl;
 
 		for (int i = 0; i < 6; i++) {
+			dices[0].gotoxy(SCORESTART, y++);
+			cout << "¦¢ ";
 			cout << " ";
 			cout.width(16);
 			cout << left << board[0].getScore(i).name;
 			for (j = 0; j < numberOfPlayer; j++) {
 				score boardScore = board[j].getScore(i);
 				cout.width(8);
-				if (boardScore.filled)				//ì ìˆ˜ê°€ ì±„ì›Œì§„ ìƒíƒœë©´ ì ìˆ˜ ì¶œë ¥
+				if (boardScore.filled)				//Á¡¼ö°¡ Ã¤¿öÁø »óÅÂ¸é Á¡¼ö Ãâ·Â
 					cout << board[j].getScore(i).score;
-				else								//ì ìˆ˜ê°€ ì•ˆì±„ì›Œì¡Œìœ¼ë©´ "-" ì¶œë ¥
+				else								//Á¡¼ö°¡ ¾ÈÃ¤¿öÁ³À¸¸é "-" Ãâ·Â
 					cout << "-";
 			}
-			cout << endl;
+			//cout << endl;
 		}
 
-		//ë³´ë„ˆìŠ¤ ì ìˆ˜ ì¶œë ¥
+		//º¸³Ê½º Á¡¼ö Ãâ·Â
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
 		cout << " ";
 		cout.width(16);
 		cout << left<<"Bonus  ";
@@ -200,41 +241,56 @@ public:
 			cout<<board[j].bonusScore();
 			
 		}
-		cout << endl;
-		cout << "-----------------------------------------------" << endl;
+		//cout << endl;
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
+		cout << "-----------------------------------------------";// << endl;
 
 		for (i = 6; i < 12 ; i++) {
+			dices[0].gotoxy(SCORESTART, y++);
+			cout << "¦¢ ";
 			cout << " ";
 			cout.width(16);
 			cout << left<<board[0].getScore(i).name;
 			for (j = 0; j < numberOfPlayer; j++) {
 				score boardScore = board[j].getScore(i);
 				cout.width(8);
-				if (boardScore.filled)				//ì ìˆ˜ê°€ ì±„ì›Œì§„ ìƒíƒœë©´ ì ìˆ˜ ì¶œë ¥
+				if (boardScore.filled)				//Á¡¼ö°¡ Ã¤¿öÁø »óÅÂ¸é Á¡¼ö Ãâ·Â
 					cout << board[j].getScore(i).score;
-				else								//ì ìˆ˜ê°€ ì•ˆì±„ì›Œì¡Œìœ¼ë©´ "-" ì¶œë ¥
+				else								//Á¡¼ö°¡ ¾ÈÃ¤¿öÁ³À¸¸é "-" Ãâ·Â
 					cout << "-";
 			}
-			cout << endl;
+			//cout << endl;
 		}
 
-		//totalì ìˆ˜ ì¶œë ¥
-		cout << "-----------------------------------------------" << endl;
+		//totalÁ¡¼ö Ãâ·Â
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
+		cout << "-----------------------------------------------";// << endl;
+
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
 		cout << " ";
 		cout.width(16);
 		cout << left<<"Total  ";
+
 		for (int j = 0; j < numberOfPlayer; j++) {
 			cout.width(8);
 			cout << board[j].calTotalResult();
 		}
-		cout << endl;
-		cout << "â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€"<<endl;
+
+		//cout << endl;
+		dices[0].gotoxy(SCORESTART, y++);
+		cout << "¦¢ ";
+		cout << "¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡"<<endl;
+
+		dices[0].gotoxy(0, 0);
 
 	}
 
 
 
-	void initDiceView() {						//diceView ê°ì²´ ìœ„ì¹˜, keepìƒíƒœ ì´ˆê¸°í™”
+	void initDiceView() {						//diceView °´Ã¼ À§Ä¡, keep»óÅÂ ÃÊ±âÈ­
 		for (int i = 0; i < NUMOFDICE; i++) {
 			dices[i].setPos(6 * i, DICEVIEWSTART);
 			dices[i].keep(false);
@@ -242,47 +298,52 @@ public:
 	}
 	
 
-	void drawDices() {			//diceView ê°ì²´ë¥¼ ì½˜ì†”í™”ë©´ì— ê·¸ë¦°ë‹¤
+	void drawDices() {			//diceView °´Ã¼¸¦ ÄÜ¼ÖÈ­¸é¿¡ ±×¸°´Ù
 		
-		//keepëœ ì£¼ì‚¬ìœ„ ë¨¼ì € ì¶œë ¥
+		cout << "Press \"ENTER\" to Roll the Dice!" << endl;	//¿£ÅÍ ´©¸£¸é ÁÖ»çÀ§ ±¼·ÁÁü
+
+		//keepµÈ ÁÖ»çÀ§ ¸ÕÀú Ãâ·Â
 		for (int i = 0; i < NUMOFDICE; i++) {
 			dices[i].setNum(turn.getKeep().getDice(i)->getNumber());
 			dices[i].drawDice(true);
 		}
-		Sleep(2000);
-		//keep ì•ˆëœ ì£¼ì‚¬ìœ„ ìƒˆë¡œ ì¶œë ¥
+
+		int key;
+		while (key = _getch() != 13) {}		//¿£ÅÍ ÀÔ·Â ÀÌº¥Æ® °¨Áö
+
+		//keep ¾ÈµÈ ÁÖ»çÀ§ »õ·Î Ãâ·Â
 		for (int i = 0; i < NUMOFDICE; i++) {
 			dices[i].setNum(turn.getKeep().getDice(i)->getNumber());
 			dices[i].drawDice(false);
 			Sleep(1);
 		}
-		dices[0].gotoxy(0, DICEVIEWSTART+4);
+		dices[0].gotoxy(0, DICEVIEWSTART+5);
 	}
 
-	void storeDiceView(const int* storeArr) {	//ë°°ì—´ ë°›ì•„ì„œ keepìƒíƒœ ê°±ì‹ 
+	void storeDiceView(const int* storeArr) {	//¹è¿­ ¹Ş¾Æ¼­ keep»óÅÂ °»½Å
 		int i = 0;
-		int index1 = *storeArr;
-		while (index1!=0) {
-			dices[index1-1].keep(true);
-			//i += sizeof(int);
+		int index = *storeArr;
+		while (index!=0) {
+			dices[index-1].keep(true);		//diceView.keep ÇÔ¼ö È£ÃâÇÏ¸é ÁÖ»çÀ§ ¸ğ¾ç ¾Æ·¡¿¡ keep Ç¥½Ã ¾÷µ¥ÀÌÆ®µÊ.
 			i++;
 			if (i >= 5)break;
-			index1 = *(storeArr + i);
+			index = *(storeArr + i);
 		}
 		
 	}
-	void deleteDiceVIew(const int* deleteArr) {		//ë°°ì—´ ë°›ì•„ì„œ keepìƒíƒœ ê°±ì‹ 
+	void deleteDiceVIew(const int* deleteArr) {		//¹è¿­ ¹Ş¾Æ¼­ keep»óÅÂ °»½Å
 		int i = 0;
-		int index2 = *deleteArr;
-		while (index2 != 0) {
-			dices[index2-1].keep(false);
-			i += sizeof(int);
-			index2 = *(deleteArr + i);
+		int index = *deleteArr;
+		while (index != 0) {
+			dices[index-1].keep(false);
+			i++;
+			if (i >= 5)break;
+			index = *(deleteArr + i);
 		}
 	}
 
 	
-	bool isGameOver() {				//ëª¨ë“  í”Œë ˆì´ì–´ì˜ boardê°€ ëª¨ë‘ ì±„ì›Œì§€ë©´ trueë¥¼ ë°˜í™˜->ê²Œì„ ì¢…ë£Œ
+	bool isGameOver() {				//¸ğµç ÇÃ·¹ÀÌ¾îÀÇ board°¡ ¸ğµÎ Ã¤¿öÁö¸é true¸¦ ¹İÈ¯->°ÔÀÓ Á¾·á
 		for (int i = 0; i < numberOfPlayer;i++) {
 			if (board[i].isFilledAll() == false)
 				return false;
