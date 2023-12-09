@@ -33,7 +33,7 @@ public:
 	void gameStart() {
 
 		int key;
-		cout << "  << Yatch Game >>" << endl << endl;
+		cout << "  << Yacht Game >>" << endl << endl;
 		cout << "Press Enter to start!!";		//enter 누르면 시작
 
 		while(key=_getch()!=13){}	//enter 키 입력 감지
@@ -239,8 +239,6 @@ public:
 		cout << "Winner is player " << winner_index+1 << endl<<"(Score: " << winner_score << ")" << endl;
 
 		dices[0].gotoxy(0, 25);
-
-
 	}
 
 	void displayBoard() {			//콘솔창 커서 이동 범위 문제때문에 우측에 표시하기로..
